@@ -27,5 +27,5 @@ defined('MOODLE_INTERNAL') || die();
 
 $string['pluginname'] = 'News';
 $string['newslist'] = 'Table view';
-$string['newscreateform'] = 'New Form';
+$string['newscreateform'] = 'News Form';
 $string['newseditform'] = 'Edir Form';
