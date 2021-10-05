@@ -25,8 +25,12 @@
 
 // Include config.php.
 require(__DIR__ . '/../../config.php');
+require_once($CFG->dirroot . '/local/news/classes/form/news_form.php');
+
+//$url = new moodle_url('/course/report/completion/index.php', array('course'=>$course->id));
+
 // Set the url of a form
-$PAGE->set_url(new moodle_url('/local/news/asdfghjkl'));
+$PAGE->set_url(new moodle_url('/local/news/form.php'));
 $PAGE->set_context(\context_system::instance());
 
 // Check is it the new news article
@@ -39,6 +43,31 @@ $title = $isNew ? get_string('newscreateform', 'local_news')
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 
+$newsForm = new news_form();
+
 echo $OUTPUT->header();
 echo $OUTPUT->heading($title);
+/*
+$templatecontext = (object)[
+    'var_name' => 'var_val',
+];
+echo $OUTPUT->render_from_template('local_news/form', $templatecontext);*/
+
+//Form processing and displaying is done here
+if ($newsForm->is_cancelled()) {
+    redirect($CFG->)
+} else if ($fromform = $newsForm->get_data()) {
+  //In this case you process validated data. $mform->get_data() returns data posted in form.
+} else {
+  // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
+  // or on the first display of the form.
+
+  //Set default data (if any)
+  //$newsForm->set_data($toform);
+  //displays the form
+  $newsForm->display();
+}
+
+$newsForm->display();
+
 echo $OUTPUT->footer();
