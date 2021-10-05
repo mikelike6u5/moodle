@@ -8,7 +8,11 @@ class news_form extends moodleform {
         global $CFG;
 
         $mform = $this->_form; // Don't forget the underscore!
-
+        $id = optional_param('id', null, PARAM_INT);
+        if (!is_null($id)) {
+            $mform->addElement('hidden', 'id', $id);
+            $mform->setType('id', PARAM_INT);
+        }
         $mform->addElement('text', 'title', 'Title'); // Add elements to your form
         $mform->setType('title', PARAM_NOTAGS);                   //Set type of element
         $mform->setDefault('title', 'Please enter the title.');        //Default value

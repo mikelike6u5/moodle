@@ -52,34 +52,47 @@ echo $OUTPUT->header();
 if ($newsForm->is_cancelled()) {
     redirect($CFG->wwwroot.'/local/news/settings_list.php', 'You canceled news form!');
 } else if ($fromform = $newsForm->get_data()) {
-    $new_record = new stdClass();
-    $new_record->title     = $fromform->title;
-    $new_record->content   = $fromform->content;
-    $new_record->is_enabled = $fromform->is_enabled;
 
-    $DB->insert_record('local_news', $new_record);
+    $id = optional_param('id', null, PARAM_INT);
+    if (!is_null($id)) {
+        $fromform->id = $id;
+        // Check if the record exists
+        $exists = $DB->record_exists('local_news', array('id'=>$id));
+        if ($exists) {
+            // Update the record
+            $DB->update_record('local_news', $fromform);
+            $message = 'You updated an article.';
+        }
+        $message = 'The record not exist.';
+    } else {
+        if (!isset($fromform->is_enabled)) {
+            $fromform->is_enabled = 0;
+        }
 
-    redirect($CFG->wwwroot.'/local/news/settings_list.php', 'You created new article!');
+        $new_record = new stdClass();
+        $new_record->title     = $fromform->title;
+        $new_record->content   = $fromform->content;
+        /*if (isset($fromform->is_enabled)) {
+          $new_record->is_enabled = $fromform->is_enabled;
+        } else {
+          $fromform->is_enabled = 0;
+        }*/
+        $DB->insert_record('local_news', $new_record);
+        $message = 'You created a new article.';
+    }
+
+    redirect($CFG->wwwroot.'/local/news/settings_list.php', 'You created a new article!');
 } else {
     // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
     // or on the first display of the form.
-
-    //$PAGE->url->get_query_string();
-
     //displays the form
-    if (isset($_GET['id'])) {
-      $id = preg_replace('/\D/', '', $_GET['id']);
-      if ($id !== '') {
+    $id = optional_param('id', null, PARAM_INT);
+    if (!is_null($id)) {
         //Set default data
-        var_dump($id);
         $toform = $DB->get_record('local_news',array('id'=>$id));
-        var_dump($toform);
         $newsForm->set_data($toform);
-      }
     }
     $newsForm->display();
 }
-
-//$newsForm->display();
 
 echo $OUTPUT->footer();

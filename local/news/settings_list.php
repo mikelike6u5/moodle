@@ -5,11 +5,8 @@
     // Globals.
     global $DB;
 
-    //global $CFG, $PAGE, $OUTPUT;
-
     // Include adminlib.php.
     require_once($CFG->libdir.'/adminlib.php');
-
     // Set up external admin page.
     admin_externalpage_setup('local_news_list');
 
@@ -17,10 +14,12 @@
     $news = $DB->get_records('local_news');
 
     foreach ($news as &$article) {
-      $link = new moodle_url('/local/news/form.php', array('id'=>$article->id));
-      $article->link = $link->__toString();
+      $link_edit = new moodle_url('/local/news/form.php', array('id'=>$article->id, 'action'=>'edit'));
+      $link_delete = new moodle_url('/local/news/form.php', array('id'=>$article->id, 'action'=>'delete'));
+      $article->link_edit = $link_edit->__toString();
+      $article->link_delete = $link_delete->__toString();
     }
-    //$news->link = ;
+
     $templatecontext = (object)[
         'news' => array_values($news),
     ];
@@ -32,8 +31,6 @@
 
     echo $OUTPUT->header();
     echo $OUTPUT->heading($title);
-
     echo $OUTPUT->render_from_template('local_news/list', $templatecontext);
-//<td><a href="{{link}}"></a></td>
     echo $OUTPUT->footer();
 ?>
