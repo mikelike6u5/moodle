@@ -10,7 +10,7 @@
         <FIELD NAME="title" TYPE="text" NOTNULL="true" SEQUENCE="false"/>
         <FIELD NAME="content" TYPE="text" NOTNULL="false" SEQUENCE="false"/>
         <FIELD NAME="is_enabled" TYPE="int" LENGTH="1" NOTNULL="true" DEFAULT="0" SEQUENCE="false"/>
-        <FIELD NAME="timemodified" TYPE="datetime" NOTNULL="true" DEFAULT="current_timestamp" SEQUENCE="false"/>
+        <FIELD NAME="timemodified" TYPE="timestamp" NOTNULL="true" DEFAULT="current_timestamp" SEQUENCE="false"/>
       </FIELDS>
       <KEYS>
         <KEY NAME="primary" TYPE="primary" FIELDS="id"/>

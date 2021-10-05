@@ -16,8 +16,8 @@
     foreach ($news as &$article) {
       $link_edit = new moodle_url('/local/news/form.php', array('id'=>$article->id, 'action'=>'edit'));
       $link_delete = new moodle_url('/local/news/form.php', array('id'=>$article->id, 'action'=>'delete'));
-      $article->link_edit = $link_edit->__toString();
-      $article->link_delete = $link_delete->__toString();
+      $article->link_edit = str_replace("&amp;", "&", $link_edit->__toString());
+      $article->link_delete = str_replace("&amp;", "&", $link_delete->__toString());
     }
 
     $templatecontext = (object)[
