@@ -1,8 +1,15 @@
 # News #
+The local plugin that allow to manage News at the Moodle environment.
 
-TODO Describe the plugin shortly here.
+Use Case
 
-TODO Provide more detailed description here.
+1. Admin user logged IN to the system. 
+
+2. Admin User Install plugin. 
+
+3. Admin user go to the list page of the news. 
+
+4. Admin user can delete/edit/view or add the news.
 
 ## Installing via uploaded ZIP file ##
 
