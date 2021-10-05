@@ -15,7 +15,7 @@ class news_form extends moodleform {
         $mform->addElement('textarea', 'content', 'Descriprion', 'wrap="virtual" rows="20" cols="50"');
         $mform->setType('content', PARAM_NOTAGS);                   //Set type of element
         $mform->setDefault('content', 'Please enter the text.');        //Default value
-        $mform->addElement('checkbox', 'isActive', 'Is enabled');
+        $mform->addElement('checkbox', 'is_enabled', 'Is enabled');
         $this->add_action_buttons();
 
     }

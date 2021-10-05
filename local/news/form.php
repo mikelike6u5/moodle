@@ -46,12 +46,7 @@ $PAGE->set_heading($title);
 $newsForm = new news_form();
 
 echo $OUTPUT->header();
-echo $OUTPUT->heading($title);
-/*
-$templatecontext = (object)[
-    'var_name' => 'var_val',
-];
-echo $OUTPUT->render_from_template('local_news/form', $templatecontext);*/
+//echo $OUTPUT->heading($title);
 
 //Form processing and displaying is done here
 if ($newsForm->is_cancelled()) {
@@ -60,17 +55,28 @@ if ($newsForm->is_cancelled()) {
     $new_record = new stdClass();
     $new_record->title     = $fromform->title;
     $new_record->content   = $fromform->content;
-    $new_record->isEnabled = $fromform->isActive;
+    $new_record->is_enabled = $fromform->is_enabled;
 
     $DB->insert_record('local_news', $new_record);
+
+    redirect($CFG->wwwroot.'/local/news/settings_list.php', 'You created new article!');
 } else {
     // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
     // or on the first display of the form.
 
-    //Set default data (if any)
-    //$newsForm->set_data($toform);
+    //$PAGE->url->get_query_string();
 
     //displays the form
+    if (isset($_GET['id'])) {
+      $id = preg_replace('/\D/', '', $_GET['id']);
+      if ($id !== '') {
+        //Set default data
+        var_dump($id);
+        $toform = $DB->get_record('local_news',array('id'=>$id));
+        var_dump($toform);
+        $newsForm->set_data($toform);
+      }
+    }
     $newsForm->display();
 }
 
