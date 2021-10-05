@@ -16,33 +16,36 @@
 }}
 {{!
     @template local_news/form
-
-
     Example context (json):
     {
-
+        'news' => array_values($news),
+        'form_link' => $link_add->__toString(),
     }
 }}
-
-<table id="news_table" class="display">
-  <thead>
-    <tr>
-      <th>Id</th>
-      <th>Title</th>
-      <th>Is Enabled</th>
-      <th>cretaed</th>
-      <th>Action</th>
-    </tr>
-  </thead>
-  <tbody>
-  {{#news}}
-    <tr>
-      <td>{{id}}</td>
-      <td>{{title}}</td>
-      <td>{{is_enabled}}</td>
-      <td>{{timemodified}}</td>
-      <td><a href="{{link_edit}}">edit</a>/<a href="{{link_delete}}">delete</a></td>
-    </tr>
-  {{/news}}
-  </tbody>
-</table>
+<div id="news-container">
+  <a id="add-button" href="{{form_link}}">Add Button</a>
+  <table id="news_table" class="display" data-page-length='25'>
+    <thead>
+      <tr>
+        <th>Id</th>
+        <th>Title</th>
+        <th>Is Enabled</th>
+        <th>cretaed</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody>
+    {{#news}}
+      <tr>
+        <td>{{id}}</td>
+        <td>{{title}}</td>
+        <td>{{is_enabled}}</td>
+        <td>{{timemodified}}</td>
+        <td>
+            <a class="action-link" href="{{link_edit}}">edit</a>/<a class="action-link" href="{{link_delete}}">delet</a>
+        </td>
+      </tr>
+    {{/news}}
+    </tbody>
+  </table>
+<div>

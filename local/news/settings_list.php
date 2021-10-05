@@ -5,12 +5,18 @@
     // Globals.
     global $DB;
 
+    // Include datatables.
+
     // Include adminlib.php.
     require_once($CFG->libdir.'/adminlib.php');
     // Set up external admin page.
     admin_externalpage_setup('local_news_list');
 
-    // Prepare data
+    $PAGE->requires->css('/local/news/css/datatables.min.css');
+    $PAGE->requires->css('/local/news/css/custom.css');
+    $PAGE->requires->js(new moodle_url($CFG->wwwroot . '/local/news/js/page.js'));
+
+    // Prepare the data.
     $news = $DB->get_records('local_news');
 
     foreach ($news as &$article) {
@@ -18,16 +24,19 @@
       $link_delete = new moodle_url('/local/news/form.php', array('id'=>$article->id, 'action'=>'delete'));
       $article->link_edit = str_replace("&amp;", "&", $link_edit->__toString());
       $article->link_delete = str_replace("&amp;", "&", $link_delete->__toString());
+      $article->timemodified = date('m/d/Y', $article->timemodified);
     }
 
+    $link_add = new moodle_url('/local/news/form.php');
     $templatecontext = (object)[
         'news' => array_values($news),
+        'form_link' => $link_add->__toString(),
     ];
 
-    // Prepare page.
+    // Prepare the page.
     $title = get_string('newslist', 'local_news');
     $PAGE->set_title($title);
-    $PAGE->set_heading($title);
+    $PAGE->set_heading('Text');
 
     echo $OUTPUT->header();
     echo $OUTPUT->heading($title);

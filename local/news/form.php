@@ -37,35 +37,34 @@ if (!is_null($id) && $action == 'delete') {
     redirect($CFG->wwwroot.'/local/news/settings_list.php', 'The article was deleted!');
 }
 
-// Set the url of a form
+// Set the url of a form.
 $PAGE->set_url(new moodle_url('/local/news/form.php'));
 $PAGE->set_context(\context_system::instance());
 
-// Check is it the new news article
+// Check is it the new news article.
 $isNew = true;
-// Show the corresponding title
+// Show the corresponding title.
 $title = $isNew ? get_string('newscreateform', 'local_news')
                 : get_string('newseditform', 'local_news');
 
-// Set the form title
+// Set the form title.
 $PAGE->set_title($title);
 $PAGE->set_heading($title);
 
 $newsForm = new news_form();
 
 echo $OUTPUT->header();
-//echo $OUTPUT->heading($title);
 
-//Form processing and displaying is done here
+// Form processing and displaying is done here.
 if ($newsForm->is_cancelled()) {
     redirect($CFG->wwwroot.'/local/news/settings_list.php', 'You canceled news form!');
 } else if ($fromform = $newsForm->get_data()) {
     if (!is_null($id)) {
         $fromform->id = $id;
-        // Check if the record exists
+        // Check if the record exists.
         $exists = $DB->record_exists('local_news', array('id'=>$id));
         if ($exists) {
-            // Update the record
+            // Update the record.
             $modified = time();
             $fromform->timemodified = $modified;
             $DB->update_record('local_news', $fromform);
@@ -83,23 +82,18 @@ if ($newsForm->is_cancelled()) {
         $new_record->is_enabled = $fromform->is_enabled;
         $modified = time();
         $new_record->timemodified = $modified;
-        /*if (isset($fromform->is_enabled)) {
-          $new_record->is_enabled = $fromform->is_enabled;
-        } else {
-          $fromform->is_enabled = 0;
-        }*/
         $DB->insert_record('local_news', $new_record);
         $message = 'The changes have been saved';
     }
 
     redirect($CFG->wwwroot.'/local/news/settings_list.php', 'You created a new article!');
 } else {
-    // this branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
+    // This branch is executed if the form is submitted but the data doesn't validate and the form should be redisplayed
     // or on the first display of the form.
-    //displays the form
+    // Displays the form.
     $id = optional_param('id', null, PARAM_INT);
     if (!is_null($id)) {
-        //Set default data
+        // Set default data.
         $toform = $DB->get_record('local_news',array('id'=>$id));
         $newsForm->set_data($toform);
     }
