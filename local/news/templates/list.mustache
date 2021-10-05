@@ -19,11 +19,11 @@
     Example context (json):
     {
         'news' => array_values($news),
-        'form_link' => $link_add->__toString(),
+        'form_link' => $linkadd->__toString(),
     }
 }}
 <div id="news-container">
-  <a id="add-button" href="{{form_link}}">Add Button</a>
+  <a id="add-button" href="{{formlink}}">Add Button</a>
   <table id="news_table" class="display" data-page-length='25'>
     <thead>
       <tr>
@@ -42,7 +42,7 @@
         <td>{{is_enabled}}</td>
         <td>{{timemodified}}</td>
         <td>
-            <a class="action-link" href="{{link_edit}}">edit</a>/<a class="action-link" href="{{link_delete}}">delet</a>
+            <a class="action-link" href="{{linkedit}}">edit</a>/<a class="action-link" href="{{linkdelete}}">delet</a>
         </td>
       </tr>
     {{/news}}

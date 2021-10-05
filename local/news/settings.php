@@ -26,14 +26,8 @@
 defined('MOODLE_INTERNAL') || die();
 $capabilityrequiredforconfig = 'moodle/site:config';
 
-//$context = \context_system::instance();
-
-//$page = new admin_settingpage('local_news_list','list news', $capabilityrequiredforpage);
-
-//var_dump($context->id);
-
 if ($hassiteconfig) {
-    // Create new administration category for news plugin
+    // Create new administration category for news plugin.
     $ADMIN->add('root', new admin_category('local_news', 'News'));
 
     // Create new external news list page.

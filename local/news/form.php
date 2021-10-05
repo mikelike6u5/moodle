@@ -25,15 +25,18 @@
 
 // Include config.php.
 require(__DIR__ . '/../../config.php');
-require_once($CFG->dirroot . '/local/news/classes/form/news_form.php');
+// Include form class.
+require_once($CFG->dirroot . '/local/news/classes/form/newsform.php');
 
 global $DB;
+
+$PAGE->requires->css('/local/news/css/form.css');
 
 $id = optional_param('id', null, PARAM_INT);
 $action = optional_param('action', null, PARAM_NOTAGS);
 
 if (!is_null($id) && $action == 'delete') {
-    $DB->delete_records('local_news', ['id'=>$id]);
+    $DB->delete_records('local_news', ['id' => $id]);
     redirect($CFG->wwwroot.'/local/news/settings_list.php', 'The article was deleted!');
 }
 
@@ -42,27 +45,28 @@ $PAGE->set_url(new moodle_url('/local/news/form.php'));
 $PAGE->set_context(\context_system::instance());
 
 // Check is it the new news article.
-$isNew = true;
+$isnew = true;
 // Show the corresponding title.
-$title = $isNew ? get_string('newscreateform', 'local_news')
+$title = $isnew ? get_string('newscreateform', 'local_news')
                 : get_string('newseditform', 'local_news');
 
 // Set the form title.
 $PAGE->set_title($title);
-$PAGE->set_heading($title);
+$PAGE->navbar->add('Table view', new moodle_url('/local/news/settings_list.php'));
+$PAGE->set_heading($SITE->shortname);
 
-$newsForm = new news_form();
+$newsform = new newsform();
 
 echo $OUTPUT->header();
-
+echo $OUTPUT->heading('New Form');
 // Form processing and displaying is done here.
-if ($newsForm->is_cancelled()) {
+if ($newsform->is_cancelled()) {
     redirect($CFG->wwwroot.'/local/news/settings_list.php', 'You canceled news form!');
-} else if ($fromform = $newsForm->get_data()) {
+} else if ($fromform = $newsform->get_data()) {
     if (!is_null($id)) {
         $fromform->id = $id;
         // Check if the record exists.
-        $exists = $DB->record_exists('local_news', array('id'=>$id));
+        $exists = $DB->record_exists('local_news', array('id' => $id));
         if ($exists) {
             // Update the record.
             $modified = time();
@@ -76,13 +80,13 @@ if ($newsForm->is_cancelled()) {
             $fromform->is_enabled = 0;
         }
 
-        $new_record = new stdClass();
-        $new_record->title      = $fromform->title;
-        $new_record->content    = $fromform->content;
-        $new_record->is_enabled = $fromform->is_enabled;
+        $newrecord = new stdClass();
+        $newrecord->title      = $fromform->title;
+        $newrecord->content    = $fromform->content;
+        $newrecord->is_enabled = $fromform->is_enabled;
         $modified = time();
-        $new_record->timemodified = $modified;
-        $DB->insert_record('local_news', $new_record);
+        $newrecord->timemodified = $modified;
+        $DB->insert_record('local_news', $newrecord);
         $message = 'The changes have been saved';
     }
 
@@ -94,10 +98,10 @@ if ($newsForm->is_cancelled()) {
     $id = optional_param('id', null, PARAM_INT);
     if (!is_null($id)) {
         // Set default data.
-        $toform = $DB->get_record('local_news',array('id'=>$id));
-        $newsForm->set_data($toform);
+        $toform = $DB->get_record('local_news', array('id' => $id));
+        $newsform->set_data($toform);
     }
-    $newsForm->display();
+    $newsform->display();
 }
 
 echo $OUTPUT->footer();

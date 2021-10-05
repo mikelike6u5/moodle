@@ -7,10 +7,9 @@ require.config({
 });
 
 require( ["jquery","DataTable"], function ($) {
-  $(document).ready(function() {
-    console.log('we have been started')
-     $('#news_table').DataTable({
-       paging: false
-     })
-  })
+    $(document).ready(function() {
+        $('#news_table').DataTable({
+            paging: false
+        })
+    })
 })
